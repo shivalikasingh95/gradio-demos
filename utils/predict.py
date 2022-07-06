@@ -19,9 +19,9 @@ def batch_predict(input_data):
 
     input_data.to_csv(input_data_file, index=None, header=None)
 
-    prod_dataset = get_dataset_from_csv(input_data_file, shuffle=True)
+    input_dataset = get_dataset_from_csv(input_data_file, shuffle=True)
     
-    pred = model.predict(prod_dataset)
+    pred = model.predict(input_dataset)
     
     for prediction, actual_gt in zip(pred, input_data['income_level'].values.tolist()):
         y_pred_prob = round(prediction.flatten()[0] * 100, 2)
@@ -96,10 +96,10 @@ def user_input_predict(age, wage, cap_gains, cap_losses, dividends, num_persons,
     input_data_file = "input_data.csv"
     
     input_df.to_csv(input_data_file, index=None, header=None)
-    prod_dataset = get_dataset_from_csv(input_data_file, shuffle=True)
+    input_dataset = get_dataset_from_csv(input_data_file, shuffle=True)
     
     labels = ['Income greater than 50000',"Income less than 50000"]
-    prediction = model.predict(prod_dataset)
+    prediction = model.predict(input_dataset)
     y_pred_prob = round(prediction[0].flatten()[0],5)
     y_not_prob = round(1-prediction[0].flatten()[0],3)
     
