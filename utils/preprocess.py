@@ -1,9 +1,36 @@
 import tensorflow as tf
 import pandas as pd
-from .constants import CSV_HEADER, TARGET_FEATURE_NAME, WEIGHT_COLUMN_NAME, NUMERIC_FEATURE_NAMES, COLUMN_DEFAULTS, CATEGORICAL_FEATURES_WITH_VOCABULARY
+from .constants import CSV_HEADER, TARGET_FEATURE_NAME, WEIGHT_COLUMN_NAME, NUMERIC_FEATURE_NAMES
 
 
 ##Helper functions for preprocessing of data:
+
+def load_test_data():
+    
+    test_data_url = "https://archive.ics.uci.edu/ml/machine-learning-databases/census-income-mld/census-income.test.gz"
+    test_data = pd.read_csv(test_data_url, header=None, names=CSV_HEADER)
+    
+    return test_data
+
+test_data = load_test_data()
+
+CATEGORICAL_FEATURES_WITH_VOCABULARY = {
+    feature_name: sorted([str(value) for value in list(test_data[feature_name].unique())])
+    for feature_name in CSV_HEADER
+    if feature_name
+    not in list(NUMERIC_FEATURE_NAMES + [WEIGHT_COLUMN_NAME, TARGET_FEATURE_NAME])
+}
+# All features names.
+FEATURE_NAMES = NUMERIC_FEATURE_NAMES + list(
+    CATEGORICAL_FEATURES_WITH_VOCABULARY.keys()
+)
+# Feature default values.
+COLUMN_DEFAULTS = [
+    [0.0]
+    if feature_name in NUMERIC_FEATURE_NAMES + [TARGET_FEATURE_NAME, WEIGHT_COLUMN_NAME]
+    else ["NA"]
+    for feature_name in CSV_HEADER
+]
 
 def process(features, target):
     for feature_name in features:
@@ -44,22 +71,14 @@ def create_dropdown_default_values_map():
         dropdown_default_values_map["max_"+col] = max_val
     return dropdown_default_values_map
 
-def load_test_data():
-    
-    test_data_url = "https://archive.ics.uci.edu/ml/machine-learning-databases/census-income-mld/census-income.test.gz"
-    test_data = pd.read_csv(test_data_url, header=None, names=CSV_HEADER)
-    
-    return test_data
-
 def create_sample_test_data():
-    
-    test_data = load_test_data()
     
     test_data["income_level"] = test_data["income_level"].apply(
     lambda x: 0 if x == " - 50000." else 1)
     
     sample_df = test_data.loc[:20,:]
-    sample_df_values = samp.values.tolist()
+    sample_df_values = sample_df.values.tolist()
     
     return sample_df_values
-    
+
+ 

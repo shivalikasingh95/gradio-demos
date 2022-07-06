@@ -1,12 +1,13 @@
 import gradio as gr
-from .constants import CSV_HEADER, NUMERIC_FEATURE_NAMES, CATEGORICAL_FEATURES_WITH_VOCABULARY, NUMBER_INPUT_COLS
-from .preprocess import create_max_values_map, create_dropdown_default_values_map, create_sample_test_data
-from .predict import batch_predict, user_input_predict
+from utils.constants import CSV_HEADER, NUMERIC_FEATURE_NAMES, NUMBER_INPUT_COLS
+from utils.preprocess import create_max_values_map, create_dropdown_default_values_map, create_sample_test_data, CATEGORICAL_FEATURES_WITH_VOCABULARY
+from utils.predict import batch_predict, user_input_predict
 
 inputs_list = []
 max_values_map = create_max_values_map()
 dropdown_default_values_map = create_dropdown_default_values_map()
 sample_input_df_val = create_sample_test_data()
+
 
 demo = gr.Blocks()
 
@@ -20,7 +21,7 @@ with demo:
         
         with gr.TabItem("Predict using batch of inputs"):
             gr.Markdown("**Input DataFrame** \n")
-            input_df = gr.Dataframe(headers=CSV_HEADER,value=samp,)
+            input_df = gr.Dataframe(headers=CSV_HEADER,value=sample_input_df_val,)
             gr.Markdown("**Output DataFrame** \n")
             output_df = gr.Dataframe()
             gr.Markdown("**Make Predictions**")
@@ -39,7 +40,7 @@ with demo:
                             else:
                                 curr_max_val = max_values_map["max_"+num_variable]
                                 numeric_input = gr.Slider(0,curr_max_val, label=num_variable,step=1)
-                                inputs_list.append(numeric_input)
+                            inputs_list.append(numeric_input)
                 
                 with gr.TabItem("Categorical Inputs"):
                     gr.Markdown("Choose values for categorical inputs here.")

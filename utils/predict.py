@@ -12,7 +12,7 @@ def batch_predict(input_data):
         1. prediction probability for each class
         2. actual expected outcome for each entry in the input dataframe
     """
-    input_data_file = "prod_data.csv"
+    input_data_file = "input_data.csv"
     labels = ['Probability of Income greater than 50000',"Probability of Income less than 50000","Actual Income"]
     
     predictions_df = pd.DataFrame(columns=labels)

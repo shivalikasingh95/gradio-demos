@@ -1,6 +1,3 @@
-import pandas as pd
-from .preprocess import load_test_data
-
 # Column names.
 CSV_HEADER = [
     "age",
@@ -67,22 +64,4 @@ NUMERIC_FEATURE_NAMES = [
 ##Cols which will use "Number" component of gradio for taking user input
 NUMBER_INPUT_COLS = ['age', 'num_persons_worked_for_employer','weeks_worked_in_year']
 
-test_data = load_test_data()
 
-CATEGORICAL_FEATURES_WITH_VOCABULARY = {
-    feature_name: sorted([str(value) for value in list(test_data[feature_name].unique())])
-    for feature_name in CSV_HEADER
-    if feature_name
-    not in list(NUMERIC_FEATURE_NAMES + [WEIGHT_COLUMN_NAME, TARGET_FEATURE_NAME])
-}
-# All features names.
-FEATURE_NAMES = NUMERIC_FEATURE_NAMES + list(
-    CATEGORICAL_FEATURES_WITH_VOCABULARY.keys()
-)
-# Feature default values.
-COLUMN_DEFAULTS = [
-    [0.0]
-    if feature_name in NUMERIC_FEATURE_NAMES + [TARGET_FEATURE_NAME, WEIGHT_COLUMN_NAME]
-    else ["NA"]
-    for feature_name in CSV_HEADER
-]
