@@ -3,7 +3,7 @@ from .preprocess import get_dataset_from_csv
 from huggingface_hub import from_pretrained_keras
 
 ##Load Model
-model = from_pretrained_keras("shivi/classification-grn-vsn")
+model = from_pretrained_keras("keras-io/structured-data-classification-grn-vsn")
 
 def batch_predict(input_data):
     """
